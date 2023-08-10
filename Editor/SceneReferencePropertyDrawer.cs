@@ -23,7 +23,7 @@ namespace UnityEngine
             
             if (!sceneAssetProperty.objectReferenceValue)
                 if (hadReference)
-                    property.FindPropertyRelative("m_ScenePath").stringValue = string.Empty;
+                    property.FindPropertyRelative("m_Path").stringValue = string.Empty;
 
             EditorGUI.EndProperty();
         }
