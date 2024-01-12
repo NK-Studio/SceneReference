@@ -35,3 +35,11 @@ public class Demo : MonoBehaviour
     }
 }
 ```
+
+# Q&A
+#### `SerializedObject target has been destroyed.` 이런 에러가 발생해요.
+이 에러는 유니티 2021.3 LTS에서 UPM 버전을 사용해서 그렇습니다. 해당 버전에서는  
+```
+https://github.com/NK-Studio/unity-scene-reference.git#2021.3
+```
+을 사용해주세요.
