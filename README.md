@@ -1,4 +1,4 @@
-# SceneReference
+# Scene Reference
 유니티에서 씬 에셋을 참조하려는 의도가 있다면, SceneReference를 사용하세요.
 
 유니티에서 제공하는 `Scene`Class는 인스펙터에 노출되지 않으며, `SceneAsset`Class는 UnityEditor 전용입니다.
