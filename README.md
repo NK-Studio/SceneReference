@@ -5,11 +5,15 @@
 
 이 자료형을 사용하면 인스펙터에 노출되며, 빌드시에도 문제가 없습니다.
 
-# 설치방법
-
+# 설치 방법 (Git UPM)
+#### 2022 LTS 이상
 ```` 
 https://github.com/NK-Studio/unity-scene-reference.git#UPM
 ````
+#### 2021.3 버전
+```
+https://github.com/NK-Studio/unity-scene-reference.git#2021.3
+```
 다음 UPM 주소를 Unity Package Manager에 +버튼을 누르고 추가합니다.
 
 # 사용법
