@@ -8,11 +8,11 @@
 # 설치 방법 (Git UPM)
 #### 2022 LTS or Higher
 ```` 
-https://github.com/NK-Studio/unity-scene-reference.git#UPM
+https://github.com/NK-Studio/SceneReference.git#UPM
 ````
 #### 2021.3 버전
 ```
-https://github.com/NK-Studio/unity-scene-reference.git#2021.3
+https://github.com/NK-Studio/SceneReference.git#2021.3
 ```
 다음 UPM 주소를 Unity Package Manager에 +버튼을 누르고 추가합니다.
 
