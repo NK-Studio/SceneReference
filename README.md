@@ -29,9 +29,16 @@ public class Demo : MonoBehaviour
     {
         // Gets the address of the scene.
         Debug.Log(TargetScene.Path);
+        Debug.Log(TargetScene.ToString);
         
         // Gets the name of the scene.
         Debug.Log(TargetScene.Name);
+
+        // Check if scene is empty
+        if (TargetScene.IsEmpty)
+        {
+            Debug.Log("Scene is empty");
+        }
     }
 }
 ```
