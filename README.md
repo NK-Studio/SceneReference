@@ -6,7 +6,7 @@
 이 자료형을 사용하면 인스펙터에 노출되며, 빌드시에도 문제가 없습니다.
 
 # 설치 방법 (Git UPM)
-#### 2022 LTS 이상
+#### 2022 LTS or Higher
 ```` 
 https://github.com/NK-Studio/unity-scene-reference.git#UPM
 ````
