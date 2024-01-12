@@ -1,32 +1,68 @@
-#if UNITY_EDITOR
-using UnityEditor;
+using UnityEngine;
+using UnityEditor.UIElements;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
-namespace UnityEngine
+namespace UnityEditor
 {
-    [CustomPropertyDrawer(typeof(SceneReference)), CanEditMultipleObjects]
-    internal class SceneReferencePropertyDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(SceneReference))]
+    class SceneReferencePropertyDrawer : PropertyDrawer
     {
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        private SerializedProperty _isDirtyProperty;
+        private SerializedProperty _sceneAssetProperty;
+        private VisualElement _root;
+        private PropertyField _sceneAssetField;
+        private HelpBox _helpBox;
+
+        private void FindProperty(SerializedProperty property)
         {
-            SerializedProperty isDirtyProperty = property.FindPropertyRelative("m_IsDirty");
+            _sceneAssetProperty = property.FindPropertyRelative("sceneAsset");
+        }
 
-            if (isDirtyProperty.boolValue)
-                isDirtyProperty.boolValue = false;
+        private void InitializeRoot()
+        {
+            _root = new VisualElement();
+            _sceneAssetField = new PropertyField(_sceneAssetProperty);
 
-            EditorGUI.BeginProperty(position, label, property);
-            Rect fieldRect = EditorGUI.PrefixLabel(position, label);
+            string msg = Application.systemLanguage switch {
+                SystemLanguage.Korean => "해당 SceneAsset은 빌드 설정에 포함되지 않았습니다.\n제안 : 빌드 세팅에 씬을 추가해주세요.",
+                _ => "The SceneAsset is not included in the build settings.\nSuggestion : Add the scene to the build settings."
+            };
+            _helpBox = new HelpBox(msg, HelpBoxMessageType.Error);
+            _helpBox.style.display = DisplayStyle.None;
 
-            var sceneAssetProperty = property.FindPropertyRelative("m_SceneAsset");
-            bool hadReference = sceneAssetProperty.objectReferenceValue != null;
+            _root.Add(_sceneAssetField);
+            _root.Add(_helpBox);
+        }
 
-            EditorGUI.PropertyField(fieldRect, sceneAssetProperty, new GUIContent());
-            
-            if (!sceneAssetProperty.objectReferenceValue)
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            FindProperty(property);
+            InitializeRoot();
+
+            _root.schedule.Execute(() => {
+
+                bool hadReference = _sceneAssetProperty.objectReferenceValue != null;
+                
                 if (hadReference)
-                    property.FindPropertyRelative("m_Path").stringValue = string.Empty;
+                {
+                    SceneAsset sceneAsset = _sceneAssetProperty.objectReferenceValue as SceneAsset;
+                    if (IsValidSceneAsset(sceneAsset))
+                        _helpBox.style.display = DisplayStyle.None;
+                    else
+                        _helpBox.style.display = DisplayStyle.Flex;
+                }
+                else
+                    _helpBox.style.display = DisplayStyle.None;
+            }).Every(100);
 
-            EditorGUI.EndProperty();
+            return _root;
+        }
+        
+        private bool IsValidSceneAsset(SceneAsset asset)
+        {
+            if (asset == null) return false;
+            return SceneUtility.GetBuildIndexByScenePath(AssetDatabase.GetAssetPath(asset)) != -1;
         }
     }
 }
-#endif
