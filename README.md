@@ -27,14 +27,14 @@ public class Demo : MonoBehaviour
     
     private void Start()
     {
-        // Gets the address of the scene.
+        // 타겟 씬의 경로를 반환합니다.
         Debug.Log(TargetScene.Path);
         Debug.Log(TargetScene.ToString);
         
-        // Gets the name of the scene.
+        // 타겟 씬의 이름을 반환합니다.
         Debug.Log(TargetScene.Name);
 
-        // Check if scene is empty
+        // 타겟 씬이 비어있는지 체크합니다.
         if (TargetScene.IsEmpty)
         {
             Debug.Log("Scene is empty");
