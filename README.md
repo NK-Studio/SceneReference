@@ -6,14 +6,10 @@
 이 자료형을 사용하면 인스펙터에 노출되며, 빌드시에도 문제가 없습니다.
 
 # 설치 방법 (Git UPM)
-#### 2022 LTS or Higher
+#### 2021.3 LTS or Higher
 ```` 
 https://github.com/NK-Studio/SceneReference.git#UPM
 ````
-#### 2021.3 버전
-```
-https://github.com/NK-Studio/SceneReference.git#2021.3
-```
 다음 UPM 주소를 Unity Package Manager에 +버튼을 누르고 추가합니다.
 
 # 사용법
@@ -42,11 +38,3 @@ public class Demo : MonoBehaviour
     }
 }
 ```
-
-# Q&A
-#### 1. `SerializedObject target has been destroyed.` 이런 에러가 발생해요.
-이 에러는 유니티 2021.3 LTS에서 UPM 버전을 사용해서 그렇습니다. 해당 버전에서는  
-```
-https://github.com/NK-Studio/unity-scene-reference.git#2021.3
-```
-을 사용해주세요.
