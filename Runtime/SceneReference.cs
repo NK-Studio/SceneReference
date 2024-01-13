@@ -2,6 +2,9 @@ using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
+#if UNITY_2021_3
+using UnityEditor.SceneManagement;
+#endif
 #endif
 
 namespace UnityEngine
@@ -23,6 +26,18 @@ namespace UnityEngine
         // 씬이 삭제되면 경로는 그대로 유지됩니다.
         [SerializeField]
         private string path = string.Empty;
+
+#if UNITY_2021_3
+#if UNITY_EDITOR
+#pragma warning disable 0414 // Never used warning - will be used by SerializedProperty.
+        // Used to dirtify the data when needed upon displaying in the inspector.
+        // Otherwise the user will never get the changes to save (unless he changes any other field of the object / scene).
+        [SerializeField]
+        private bool isDirty;
+#pragma warning restore 0414
+#endif
+#else
+#endif
 
         /// <summary>
         /// <see cref="UnityEngine.SceneManagement.SceneManager"/> API에서 사용할 씬 경로를 반환합니다.
@@ -126,8 +141,23 @@ namespace UnityEngine
         {
             if (sceneAsset == null)
             {
+#if UNITY_2021_3
+                SceneAsset foundAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
+                if (foundAsset)
+                {
+                    sceneAsset = foundAsset;
+                    isDirty = true;
+
+                    if (!Application.isPlaying)
+                    {
+                        // NOTE: This doesn't work for scriptable objects, hence the m_IsDirty.
+                        EditorSceneManager.MarkAllScenesDirty();
+                    }
+                }
+#else
                 if (!string.IsNullOrEmpty(path))
                     path = string.Empty;
+#endif
             }
             else
             {
@@ -135,8 +165,22 @@ namespace UnityEngine
                 if (string.IsNullOrEmpty(foundPath))
                     return;
 
+#if UNITY_2021_3
+                if (path != foundPath)
+                {
+                    path = foundPath;
+                    isDirty = true;
+
+                    if (!Application.isPlaying)
+                    {
+                        // NOTE: This doesn't work for scriptable objects, hence the m_IsDirty.
+                        EditorSceneManager.MarkAllScenesDirty();
+                    }
+                }
+#else
                 if (path != foundPath)
                     path = foundPath;
+#endif
             }
         }
 #endif
