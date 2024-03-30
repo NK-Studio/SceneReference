@@ -88,11 +88,12 @@ namespace UnityEditor
             _sceneAssetProperty = property.FindPropertyRelative("sceneAsset");
         }
 
-        private void InitializeRoot()
+        private void InitializeRoot(SerializedProperty property)
         {
             _root = new VisualElement();
             _sceneAssetField = new PropertyField(_sceneAssetProperty);
-
+            _sceneAssetField.label = property.name; 
+            
             string msg = Application.systemLanguage switch {
                 SystemLanguage.Korean => "해당 SceneAsset은 빌드 설정에 포함되지 않았습니다.\n제안 : 빌드 세팅에 씬을 추가해주세요.",
                 _ => "The SceneAsset is not included in the build settings.\nSuggestion : Add the scene to the build settings."
@@ -107,7 +108,7 @@ namespace UnityEditor
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
             FindProperty(property);
-            InitializeRoot();
+            InitializeRoot(property);
 
             _root.schedule.Execute(() => {
 
