@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-#if UNITY_2021_3
+#if UNITY_2021_3 || ODIN_INSPECTOR
 
 #else
 using UnityEditor.UIElements;
@@ -13,23 +13,22 @@ namespace UnityEditor
     [CustomPropertyDrawer(typeof(SceneReference))]
     class SceneReferencePropertyDrawer : PropertyDrawer
     {
-#if UNITY_2021_3
+#if UNITY_2021_3 || ODIN_INSPECTOR 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
+            EditorGUI.BeginProperty(position, label, property);
+            
             SerializedProperty isDirtyProperty = property.FindPropertyRelative("isDirty");
 
             if (isDirtyProperty.boolValue)
                 isDirtyProperty.boolValue = false;
-
-            EditorGUI.BeginProperty(position, label, property);
-
 
             var sceneAssetProperty = property.FindPropertyRelative("sceneAsset");
             bool hadReference = sceneAssetProperty.objectReferenceValue != null;
             
             var assetFieldPosition = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
             EditorGUI.PropertyField(assetFieldPosition, sceneAssetProperty, new GUIContent("Scene Asset"));
-            
+
             position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing; // Move position on for the
             
             string msg = Application.systemLanguage switch {
@@ -110,9 +109,9 @@ namespace UnityEditor
             FindProperty(property);
             InitializeRoot(property);
 
-            _root.schedule.Execute(() => {
-
-                bool hadReference = _sceneAssetProperty.objectReferenceValue != null;
+            _root.TrackPropertyValue(_sceneAssetProperty, newValue =>
+            {
+                bool hadReference = newValue.objectReferenceValue != null;
 
                 if (hadReference)
                 {
@@ -124,8 +123,8 @@ namespace UnityEditor
                 }
                 else
                     _helpBox.style.display = DisplayStyle.None;
-            }).Every(100);
-
+            });
+            
             return _root;
         }
 #endif

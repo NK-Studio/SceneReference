@@ -2,7 +2,7 @@ using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
-#if UNITY_2021_3
+#if UNITY_2021_3 || ODIN_INSPECTOR
 using UnityEditor.SceneManagement;
 #endif
 #endif
@@ -27,7 +27,7 @@ namespace UnityEngine
         [SerializeField]
         private string path = string.Empty;
 
-#if UNITY_2021_3
+#if UNITY_2021_3 || ODIN_INSPECTOR
 #if UNITY_EDITOR
 #pragma warning disable 0414 // Never used warning - will be used by SerializedProperty.
         // Used to dirtify the data when needed upon displaying in the inspector.
@@ -141,23 +141,8 @@ namespace UnityEngine
         {
             if (sceneAsset == null)
             {
-#if UNITY_2021_3
-                SceneAsset foundAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
-                if (foundAsset)
-                {
-                    sceneAsset = foundAsset;
-                    isDirty = true;
-
-                    if (!Application.isPlaying)
-                    {
-                        // NOTE: This doesn't work for scriptable objects, hence the m_IsDirty.
-                        EditorSceneManager.MarkAllScenesDirty();
-                    }
-                }
-#else
-                if (!string.IsNullOrEmpty(path))
-                    path = string.Empty;
-#endif
+                 if (!string.IsNullOrEmpty(path))
+                     path = string.Empty;
             }
             else
             {
@@ -165,7 +150,7 @@ namespace UnityEngine
                 if (string.IsNullOrEmpty(foundPath))
                     return;
 
-#if UNITY_2021_3
+#if UNITY_2021_3 || ODIN_INSPECTOR
                 if (path != foundPath)
                 {
                     path = foundPath;
