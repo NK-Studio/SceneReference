@@ -13,6 +13,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.domybest.mybox",
+            "expression": "",
+            "define": "USE_MYBOX"
+        }
+    ],
     "noEngineReferences": false
 }

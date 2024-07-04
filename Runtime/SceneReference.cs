@@ -2,7 +2,7 @@ using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
-#if UNITY_2021_3 || ODIN_INSPECTOR
+#if UNITY_2021_3 || ODIN_INSPECTOR || USE_MYBOX
 using UnityEditor.SceneManagement;
 #endif
 #endif
@@ -27,7 +27,7 @@ namespace UnityEngine
         [SerializeField]
         private string path = string.Empty;
 
-#if UNITY_2021_3 || ODIN_INSPECTOR
+#if UNITY_2021_3 || ODIN_INSPECTOR || USE_MYBOX
 #if UNITY_EDITOR
 #pragma warning disable 0414 // Never used warning - will be used by SerializedProperty.
         // Used to dirtify the data when needed upon displaying in the inspector.
@@ -150,7 +150,7 @@ namespace UnityEngine
                 if (string.IsNullOrEmpty(foundPath))
                     return;
 
-#if UNITY_2021_3 || ODIN_INSPECTOR
+#if UNITY_2021_3 || ODIN_INSPECTOR || USE_MYBOX
                 if (path != foundPath)
                 {
                     path = foundPath;

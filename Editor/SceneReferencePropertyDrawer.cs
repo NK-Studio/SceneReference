@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-#if UNITY_2021_3 || ODIN_INSPECTOR
+#if UNITY_2021_3 || ODIN_INSPECTOR || USE_MYBOX
 
 #else
 using UnityEditor.UIElements;
@@ -13,7 +13,7 @@ namespace UnityEditor
     [CustomPropertyDrawer(typeof(SceneReference))]
     class SceneReferencePropertyDrawer : PropertyDrawer
     {
-#if UNITY_2021_3 || ODIN_INSPECTOR 
+#if UNITY_2021_3 || ODIN_INSPECTOR || USE_MYBOX
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, property);
